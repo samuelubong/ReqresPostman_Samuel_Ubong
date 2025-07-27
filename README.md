@@ -43,10 +43,11 @@ This plan outlines API testing for [https://reqres.in](https://reqres.in), a moc
 ## ▶️ 4. How to Run the Tests
 
 ### Option 1: Manual Testing (Using Postman)
-1. Open Postman.
-2. Import the collection or create new requests for each endpoint.
-3. Use base URL: `https://reqres.in/api`
-4. Send requests manually and inspect responses.
+1. Download the collection from this repo "HR REMWASTE API TEST.postman_collection.json"
+2. Open Postman.
+3. Import the collection.
+4. Use base URL: `https://reqres.in/api`
+5. Send requests manually and inspect responses.
 
 ### Option 2: Automated Collection Runner
 1. Open "Runner" in Postman.
