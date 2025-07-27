@@ -1,0 +1,1149 @@
+{
+	"info": {
+		"_postman_id": "5f2d69aa-ce01-4fe9-b55c-f54cea824da5",
+		"name": "HR REMWASTE API TEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21954012",
+		"_collection_link": "https://martian-meadow-971001.postman.co/workspace/-Introduction-to-postman-course~4c5ce2be-ec75-4676-b1ae-8d1dd1451028/collection/21954012-5f2d69aa-ce01-4fe9-b55c-f54cea824da5?action=share&source=collection_link&creator=21954012"
+	},
+	"item": [
+		{
+			"name": "LOGIN - POST",
+			"item": [
+				{
+					"name": "Successful Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Test Case: Valid email/username and password",
+									"",
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Login successful - token received\", () => {",
+									"  const jsonData = pm.response.json();",
+									"  pm.expect(jsonData).to.have.property(\"token\");",
+									"});",
+									"",
+									"",
+									"//Save the token in a Collection variable",
+									"const jsonData = pm.response.json();",
+									"",
+									"if (jsonData.token) {",
+									"  pm.environment.set(\"token\", jsonData.token);",
+									"  console.log(\"Token saved to collection variable:\", jsonData.token);",
+									"} else {",
+									"  console.warn(\"Token not found in response\");",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"eve.holt@reqres.in\",\n    \"password\": \"pistol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}login",
+							"host": [
+								"{{baseURL}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 400 for invalid credentials\", () => {",
+									"  pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error message returned\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.error).to.include(\"user not found\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "//Test Case: Invalid email, valid password\n\n\n{\n    \"email\": \"eve.holt@reqress.in\",\n    \"password\": \"pistol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}login",
+							"host": [
+								"{{baseURL}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing Email or Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 400 for invalid credentials\", () => {",
+									"  pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error message returned\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.error).to.include(\"Missing password\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "//Test Case: Invalid email, valid password\n\n\n{\n    \"email\": \"eve.holt@reqress.in\",\n    \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}login",
+							"host": [
+								"{{baseURL}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty Email and Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 400 for invalid credentials\", () => {",
+									"  pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error message returned\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.error).to.include(\"Missing email or username\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\n\n{\n    \"email\": \"\",\n    \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}login",
+							"host": [
+								"{{baseURL}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SQL Injection Attempt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 400 for invalid credentials\", () => {",
+									"  pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error message returned\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.error).to.include(\"user not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin' OR '1'='1\",\n    \"password\": \"any\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}login",
+							"host": [
+								"{{baseURL}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cross-Site Scripting (XSS) Attempt",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 400 for invalid credentials\", () => {",
+									"  pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error message returned\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.error).to.include(\"user not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"<script>alert(1)</script>\",\n    \"password\": \"pistol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}login",
+							"host": [
+								"{{baseURL}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Headers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 200 for invalid credentials\", () => {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"eve.holt@reqres.in\",\n    \"password\": \"pistol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}login",
+							"host": [
+								"{{baseURL}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Response Time",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 200 for invalid credentials\", () => {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 1000ms\", () => {",
+									"  pm.expect(pm.response.responseTime).to.be.below(1000);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"eve.holt@reqres.in\",\n    \"password\": \"pistol\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}login",
+							"host": [
+								"{{baseURL}}login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LIST USERS - GET",
+			"item": [
+				{
+					"name": "Successfully List Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Should return 200 for successful Get response \", () => {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Content-Type is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"pm.test(\"Response has expected fields\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res).to.have.property(\"page\", 2);",
+									"  pm.expect(res).to.have.property(\"data\").that.is.an(\"array\");",
+									"});",
+									"",
+									"pm.test(\"Each user has required fields\", () => {",
+									"  const res = pm.response.json();",
+									"  res.data.forEach(user => {",
+									"    pm.expect(user).to.have.property(\"id\");",
+									"    pm.expect(user).to.have.property(\"email\");",
+									"    pm.expect(user).to.have.property(\"first_name\");",
+									"    pm.expect(user).to.have.property(\"last_name\");",
+									"    pm.expect(user).to.have.property(\"avatar\");",
+									"  });",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}users?page=2",
+							"host": [
+								"{{baseURL}}users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid page number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"No data returned for invalid page\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.data.length).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}users?page=1000000",
+							"host": [
+								"{{baseURL}}users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1000000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing page parameter defaults to first page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Defaults to page 1 when page param is missing\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.page).to.eql(1);",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}users",
+							"host": [
+								"{{baseURL}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid query param returns 200 (but unfiltered response)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Invalid query param is ignored\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res).to.have.property(\"data\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}users?invalidParam=abc",
+							"host": [
+								"{{baseURL}}users"
+							],
+							"query": [
+								{
+									"key": "invalidParam",
+									"value": "abc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CREATE - POST",
+			"item": [
+				{
+					"name": "Successful Created User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"",
+									"pm.test(\"Response includes correct id\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res).to.have.property(\"id\", res.id);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response includes id and createdAt\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res).to.have.property(\"id\");",
+									"  pm.expect(res).to.have.property(\"createdAt\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is application/json\", () => {",
+									"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"const jsonData = pm.response.json();",
+									"",
+									"if (jsonData.id) {",
+									"  pm.collectionVariables.set(\"userID\", jsonData.id);",
+									"  console.log(\"userID saved to collection variable:\", jsonData.id);",
+									"} else {",
+									"  console.warn(\"id not found in response\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFirstName}}\",\n    \"job\": \"{{$randomJobTitle}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}users",
+							"host": [
+								"{{baseURL}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid/Missing Inputs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Missing job still returns 201\", () => {",
+									"  pm.response.to.have.status(201);",
+									"  const res = pm.response.json();",
+									"  pm.expect(res).to.have.property(\"name\");",
+									"  pm.expect(res.job).to.eql(undefined);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFirstName}}\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}users",
+							"host": [
+								"{{baseURL}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty body, validate missing fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Empty body returns 201 but no name/job\", () => {",
+									"  pm.response.to.have.status(201);",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.name).to.eql(undefined);",
+									"  pm.expect(res.job).to.eql(undefined);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}users",
+							"host": [
+								"{{baseURL}}users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UPDATE - PUT",
+			"item": [
+				{
+					"name": "Valid PUT Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated name and job\", () => {",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.name).to.eql(\"morpheus\");",
+									"  pm.expect(res.job).to.eql(\"zion resident\");",
+									"});",
+									"",
+									"const schema = {",
+									"  \"type\": \"object\",",
+									"  \"required\": [\"updatedAt\"],",
+									"  \"properties\": {",
+									"    \"name\": { \"type\": \"string\" },",
+									"    \"job\": { \"type\": \"string\" },",
+									"    \"updatedAt\": { \"type\": \"string\", \"format\": \"date-time\" }",
+									"  }",
+									"};",
+									"",
+									"pm.test(\"Validates schema\", () => {",
+									"  pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"morpheus\",\n    \"job\": \"zion resident\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}users/{{userID}}",
+							"host": [
+								"{{baseURL}}users"
+							],
+							"path": [
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty Body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response handles empty body\", () => {",
+									"  pm.response.to.have.status(200); // ReqRes returns 200 anyway",
+									"  const res = pm.response.json();",
+									"  pm.expect(res.name).to.eql(undefined);",
+									"  pm.expect(res.job).to.eql(undefined);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}users/{{userID}}",
+							"host": [
+								"{{baseURL}}users"
+							],
+							"path": [
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Missing One Field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Handles missing name\", () => {",
+									"  pm.response.to.have.status(200);",
+									"  const res = pm.response.json();",
+									"  pm.expect(res).to.have.property(\"job\", \"Developer\");",
+									"  pm.expect(res.name).to.eql(undefined);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"job\": \"Developer\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}users/{{userID}}",
+							"host": [
+								"{{baseURL}}users"
+							],
+							"path": [
+								"{{userID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "Successful Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", () => {",
+									"  pm.response.to.have.status(204);",
+									"});",
+									"",
+									"pm.test(\"Response body is empty\", () => {",
+									"  pm.expect(pm.response.text()).to.eql('');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "reqres-free-v1",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}users/{{userID}}?",
+							"host": [
+								"{{baseURL}}users"
+							],
+							"path": [
+								"{{userID}}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://reqres.in/api/",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "APIKey",
+			"value": "reqres-free-v1",
+			"type": "string"
+		},
+		{
+			"key": "userID",
+			"value": ""
+		}
+	]
+}
