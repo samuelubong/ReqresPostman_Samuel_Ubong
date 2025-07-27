@@ -72,3 +72,6 @@ This plan outlines API testing for [https://reqres.in](https://reqres.in), a moc
 ---
 
 > 🔗 [Reqres.in Official Docs](https://reqres.in)
+>
+> <img width="1114" height="802" alt="image" src="https://github.com/user-attachments/assets/13bf920f-b0fd-4780-a72b-8aba695e5b2a" />
+
